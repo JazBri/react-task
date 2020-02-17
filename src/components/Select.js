@@ -1,24 +1,22 @@
 import React from 'react';
-import Task from "./Task";
 
 class Select extends React.Component{
-    constructor(props){
-        super(props);
-        
-    }
+    constructor(){
+        super()
+        this.state = { condicion: ' '}
     //Funcion para mostrar los done:true
-    addTaskShow =(task)=>{
+    // addTaskShow =(task)=>{
     //  console.log(task);
      // console.log(this.state.tasks);
+    // }
     }
-
     //Funcion que diferencia las tareas verdaderas de las falsas.
     showTasks =(e)=>{
       //e.preventdefault();
         const list = this.props.tasksList.map((tacksS =>{
             if(tacksS.done !== false){
             console.log('Tareas true: ', tacksS);
-            this.addTaskShow(tacksS); 
+            // this.addTaskShow(tacksS); 
         }
         }))
     }  
@@ -29,24 +27,47 @@ class Select extends React.Component{
     }
 
     guardarSelect(select){   
-        console.log(select);
-        const done =[];
-        if(select === 'FINALIZADAS'){
-            this.showDoneTasks();
-            console.log(this.props.tasksList.filter(task=>task.done));
-            done.push(this.props.tasksList.filter(task=>task.done));
-            console.log(done);
-        }
+        
+        this.setState({condicion: select});
+        
+        
+        
+        // const done =[];
+        // if(select === 'ALL'){
+        //     this.showDoneTasks();
+        //     console.log(this.props.tasksList.filter(task=>task.done));
+        //     done.push(this.props.tasksList.filter(task=>task.done));
+        //     console.log(done);
+        // }
     }
 
     //Filtra las tareas terminadas
+
+    taskList = () => {
+        
+        let select = 'ALL';
+        if(select === 'FINALIZADAS'){
+        return this.props.tasksList.filter(task=>task.done)
+        }else if(select === 'EN PROCESO'){
+            return this.props.tasksList.filter(task=>!task.done)
+        }else if(select === 'ALL'){
+            return this.props.tasksList;
+        }else{
+            console.log('El state falla');
+        }
+    }
+
     showDoneTasks = () => this.props.tasksList.filter(task=>task.done)
     showNotDoneTasks = () => this.props.tasksList.filter(task=>!task.done);
     showAllTasks = () => this.props.tasksList;
 
+
     render(){
+        const a = 'Muestra el render';
+
         return(
             <>
+{/* SELECT */}
                 <form>
                     <div className="form-group">      
                         <select className="form-control" 
@@ -60,21 +81,25 @@ class Select extends React.Component{
                     </div>
                 </form>
                 
-
+{/* SELECT 1 */}
                 <div className="card mb-3">
                     <div className="card-header">
-                        Tareas Finalizadas
+                        Tareas
                     </div>
+                
                 <div className="card-body">
-                    {this.showDoneTasks().map((task, key) =>( 
+                    {this.taskList().map((task, key) =>( 
                         <>
                             <h5 className="card-title">Tarea {task.id} {task.name}</h5>
+                            {a}
                             <p className="card-text">{task.description}</p></>
                     ))}
                 </div>
             </div>
 
-            <div className="card mb-3">
+{/* SELECT 2 */}
+
+            {/* <div className="card mb-3">
                     <div className="card-header">
                         Tareas en Proceso
                     </div>
@@ -85,9 +110,11 @@ class Select extends React.Component{
                             <p className="card-text">{task.description}</p></>
                     ))}
                 </div>
-            </div>
+            </div> */}
 
-            <div className="card mb-3">
+{/* SELECT 3 */}
+
+            {/* <div className="card mb-3">
                     <div className="card-header">
                         Todas las Tareas
                     </div>
@@ -99,7 +126,9 @@ class Select extends React.Component{
 
                     ))}
                 </div>
-            </div>
+            </div> */}
+{/* FIN SELECT */}
+
             </>
         );
     }
